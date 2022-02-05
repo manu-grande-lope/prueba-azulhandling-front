@@ -8,6 +8,20 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuDrawer from "../drawer";
+import TextField from '@mui/material/TextField';
+
+
+function InputWithIcon() {
+  return (
+    <Box sx={{ '& > :not(style)': { m: 1 } }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <SearchIcon sx={{ color: 'white', mr: 1, my: 0.5 }} />
+        <TextField id="input-with-sx" label="Search flights" variant="standard" sx={{color:'white'}} />
+      </Box>
+    </Box>
+  );
+}
+
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: "flex-start",
@@ -27,14 +41,12 @@ export default function Header() {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 10 }}
+            sx={{ mr: 12 }}
           >
             <MenuDrawer sx={{color: 'alert'}}/>
             <MenuIcon />
           </IconButton>
-          <IconButton size="large" aria-label="search" color="inherit">
-            <SearchIcon />
-          </IconButton>
+          <InputWithIcon/>
         </StyledToolbar>
       </AppBar>
     </Box>

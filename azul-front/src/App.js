@@ -9,9 +9,8 @@ function App() {
   return (
     <Grid xl={12}>
       <Header/>
-      <InputFlights/>
       <DataGrab/>
-      {/* <TableFlights/> */}
+      <InputFlights/>
     </Grid>
   );
 }

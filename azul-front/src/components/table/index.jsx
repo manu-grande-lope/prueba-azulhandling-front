@@ -1,17 +1,53 @@
 import * as React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useEffect } from 'react';
-import { Fragment } from 'react';
-import { useState } from 'react';
 import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import './styles.css' 
+
+
+
+const columns = [
+  { id: 'number', label: 'Flight Number', minWidth: 170 },
+  { id: 'aircraft.reg', label: 'REG', minWidth: 100 },
+  {
+    id: 'row.departure.airport.iata',
+    label: 'Airport',
+    minWidth: 170,
+    align: 'right',
+  },
+  {
+    id: '.airline.name',
+    label: 'Airline',
+    minWidth: 170,
+    align: 'right',
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    minWidth: 170,
+    align: 'right',
+  },
+];
 
 export default function DataGrab() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   const [flights, getNewFlights] = useState({});
 
@@ -37,42 +73,65 @@ useEffect(()=>{
     });
   console.log("UseE funciona")
 
+
+
 },[]);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>INFO</TableCell>
-            <TableCell>ARRIVALS</TableCell>
-            <TableCell>DEPARTURES</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>FLIGHTS</TableCell>
-            <TableCell align="right">ATP</TableCell>
-            <TableCell align="right">FlightNumber</TableCell>
-            <TableCell align="right">Reg</TableCell>
-            <TableCell align="right">Type</TableCell>
+    <Paper sx={{ width: '100%', overflow: 'hidden'}} elevation={2}>
+    <TableContainer sx={{ maxHeight: '80vh' }}>
+      <Table stickyHeader aria-label="sticky table">
+        <TableHead >
+          <TableRow className='tableRow_styles'>
+            {columns.map((column) => (
+              <TableCell
+                key={column.id}
+                align={column.align}
+                style={{ minWidth: column.minWidth }}
+              >
+                {column.label}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {flights.departures?.map((data, index) => (
-            <TableRow
-            key={index}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {data.number}
-              </TableCell>
-              <TableCell align="right">{data.airport}</TableCell>
-              <TableCell align="right">{data.callsign}</TableCell>
-              <TableCell align="right">{data.status}</TableCell>
-              <TableCell align="right">{data.airline}</TableCell>
-            </TableRow>
-          ))}
+          {flights.arrivals
+            ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            ?.map((row) => {
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.number}>
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    console.log(column.id)
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && typeof value === 'number'
+                          ? column.format(value)
+                          : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
     </TableContainer>
-  );
-}
+    <TablePagination
+      rowsPerPageOptions={[10, 25, 100]}
+      component="div"
+      count={flights.length}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+  </Paper>
+);
+      // <div>
+      //   <ul>
+      //   {flights.arrivals?.map(data  => <li>{data.number} - {data.aircraft.reg} - {data.departure.airport.iata} - {data.arrival.scheduledTimeLocal} - {data.status}</li>)}
+      //   </ul>
+      // </div>
+      // )
+};

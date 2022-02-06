@@ -12,6 +12,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import { useState, Fragment } from 'react';
 import './style.css';
 
+
 export default function MenuDrawer() {
     const [state, setState] = useState({
         top: false,
@@ -70,9 +71,9 @@ export default function MenuDrawer() {
 
     return (
         <div className='drawer_style'>
-            {['MENU'].map((anchor) => (
+            {[""].map((anchor) => (
                 <Fragment key={anchor}>
-                    <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+                    <Button  onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
                     <Drawer
                         open={state[anchor]}
                         onClose={toggleDrawer(anchor, false)}

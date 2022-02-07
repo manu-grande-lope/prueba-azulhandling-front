@@ -1,6 +1,14 @@
 
-.div_flex{
+.div_table{
     display: flex;
+    justify-content: space-around;
+    width: 53vw;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.tables_style{
+    display: flex;
+    flex-direction: row;
     justify-content: center;
-    font-size: larger;
 }

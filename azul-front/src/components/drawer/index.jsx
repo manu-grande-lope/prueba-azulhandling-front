@@ -11,10 +11,12 @@ import LockIcon from '@mui/icons-material/Lock';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { useState, Fragment } from 'react';
 import TextField from '@mui/material/TextField';
+import { Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
 import './style.css';
 
 
@@ -48,7 +50,6 @@ export default function MenuDrawer() {
 
         const setNewFlight = (event) => {
             event.preventDefault();
-            console.log(event.target.number.value)
             const options = {
                 method: 'POST',
                 headers: {
@@ -57,27 +58,19 @@ export default function MenuDrawer() {
                 body: JSON.stringify(
                     {
                         FlightNumber: event.target.number.value === "" ? 0 : event.target.number.value,
-                        REG: event.target.reg.value === "" ? 0 : event.target.number.value,
+                        REG: event.target.reg.value === "" ? 0 : event.target.reg.value,
                         IATA:  event.target.iata.value === "" ? 0 : event.target.iata.value,
-                        Airline: 123,
-                        Arrival: 123,
+                        Airline: event.target.airline.value === "" ? 0 : event.target.airline.value,
+                        Arrival: event.target.arrival.value === "" ? 0 : event.target.arrival.value,
                     }
                 )
             }
             fetch('http://localhost:3050/createflight', options)
                 .then(r => {
-                    console.log(r)
                     return r.json
                 })
             handleClose();
         }
-
-
-        // const [flightNumberReg, setflightNumberReg] = useState("")
-        // const [regReg, setRegReg] = useState("")
-        // const [airportReg, setAirportReg] = useState("")
-        // const [airlineReg, setAirlineReg] = useState("")
-        // const [arrivalReg, setArrivalReg] = useState("")
 
         return (
             <div>
@@ -101,7 +94,7 @@ export default function MenuDrawer() {
                                 margin="dense"
                                 id="reg"
                                 name='reg'
-                                label="REG"
+                                label="REG (no special characters)"
                                 type="text"
                                 fullWidth
                                 variant="standard"
@@ -120,6 +113,7 @@ export default function MenuDrawer() {
                                 autoFocus
                                 margin="dense"
                                 id="airline"
+                                name='airline'
                                 label="Airline"
                                 type="text"
                                 fullWidth
@@ -129,7 +123,8 @@ export default function MenuDrawer() {
                                 autoFocus
                                 margin="dense"
                                 id="status"
-                                label="Status"
+                                label="Scheduled arrival time"
+                                name='arrival'
                                 type="text"
                                 fullWidth
                                 variant="standard"
@@ -152,35 +147,40 @@ export default function MenuDrawer() {
             color="main"
         >
             <List sx={{ mt: 20 }}>
+            <Divider sx={{mt:2, mb:2}} light={true} variant="middle"/>
                 <ListItem disablePadding>
                     <ListItemButton >
                         <ListItemIcon>
-                            < AddCircleOutlineIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="input" onClick={handleClickOpen} />
+                            < AddCircleOutlineIcon sx={{ ml: 2.5 }} fontSize="large" color="input" onClick={handleClickOpen} />
                         </ListItemIcon>
                         <FormDialog />
                     </ListItemButton>
                 </ListItem>
+                <Divider sx={{mt:2, mb:2}} light={true} variant="middle"/>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
-                            < LinkIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="icons" />
+                            < LinkIcon sx={{ ml: 2.5 }} fontSize="large" color="icons" />
                         </ListItemIcon>
                     </ListItemButton>
                 </ListItem>
+                <Divider sx={{mt:2, mb:2}} light={true} variant="middle"/>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
-                            < LockIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="icons" />
+                            < LockIcon sx={{ ml: 2.5 }} fontSize="large" color="icons" />
                         </ListItemIcon>
                     </ListItemButton>
                 </ListItem>
+                <Divider sx={{mt:2, mb:2}} light={true} variant="middle"/>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
-                            < ListAltIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="icons" />
+                            < ListAltIcon sx={{ ml: 2.5 }} fontSize="large" color="icons" />
                         </ListItemIcon>
                     </ListItemButton>
                 </ListItem>
+                <Divider sx={{mt:2, mb:2}} light={true} variant="middle"/>
             </List>
         </Box>
     );

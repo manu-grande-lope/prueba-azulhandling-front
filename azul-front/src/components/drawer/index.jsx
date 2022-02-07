@@ -18,6 +18,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import './style.css';
 
 
+
 export default function MenuDrawer() {
     const [state, setState] = useState({
         top: false,
@@ -44,101 +45,117 @@ export default function MenuDrawer() {
 
     function FormDialog() {
 
-        const [flightNumberReg, setflightNumberReg] = useState("")
-        const [regReg, setRegReg] = useState("")
-        const [airportReg, setAirportReg] = useState("")
-        const [ailineReg, setAirlineReg] = useState("")
-        const [statusReg, setStatusReg] = useState("")
+
+        const setNewFlight = (event) => {
+            event.preventDefault();
+            console.log(event.target.number.value)
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        FlightNumber: event.target.number.value === "" ? 0 : event.target.number.value,
+                        REG: event.target.reg.value === "" ? 0 : event.target.number.value,
+                        IATA:  event.target.iata.value === "" ? 0 : event.target.iata.value,
+                        Airline: 123,
+                        Arrival: 123,
+                    }
+                )
+            }
+            fetch('http://localhost:3050/createflight', options)
+                .then(r => {
+                    console.log(r)
+                    return r.json
+                })
+            handleClose();
+        }
+
+
+        // const [flightNumberReg, setflightNumberReg] = useState("")
+        // const [regReg, setRegReg] = useState("")
+        // const [airportReg, setAirportReg] = useState("")
+        // const [airlineReg, setAirlineReg] = useState("")
+        // const [arrivalReg, setArrivalReg] = useState("")
 
         return (
             <div>
-                <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Add new flights to data base</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="number"
-                            label="Flight number"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            onChange={(e) => {
-                                setflightNumberReg(e.target.value);
-                            }}
-
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="reg"
-                            label="REG"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            onChange={(e) => {
-                                setRegReg(e.target.value);
-                            }}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="airtport"
-                            label="Airport / IATA code"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            onChange={(e) => {
-                                setAirportReg(e.target.value);
-                            }}
-
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="airline"
-                            label="Airline"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            onChange={(e) => {
-                                setAirlineReg(e.target.value);
-                            }}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="status"
-                            label="Status"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            onChange={(e) => {
-                                setStatusReg(e.target.value);
-                            }}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleClose}>SEND</Button>
-                    </DialogActions>
-                </Dialog>
+                
+                    <Dialog open={open} onClose={handleClose}>
+                    <form onSubmit={setNewFlight}>
+                        <DialogTitle>Add new flights to data base</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="number"
+                                name='number'
+                                label="Flight number"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="reg"
+                                name='reg'
+                                label="REG"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="airtport"
+                                name="iata"
+                                label="Airport / IATA code"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="airline"
+                                label="Airline"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="status"
+                                label="Status"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button type='submit' >SEND</Button>
+                        </DialogActions>
+                        </form>
+                    </Dialog>
             </div>
         );
     }
 
     const list = (anchor) => (
         <Box
-            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 100 }}
+            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 100, backgroundColor: "#EBC431", height: '100vh' }}
             role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
+            color="main"
         >
-            <List sx={{ mt: 3 }}>
+            <List sx={{ mt: 20 }}>
                 <ListItem disablePadding>
                     <ListItemButton >
                         <ListItemIcon>
-                            < AddCircleOutlineIcon sx={{ ml: 2.5 }} />
+                            < AddCircleOutlineIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="input" onClick={handleClickOpen} />
                         </ListItemIcon>
                         <FormDialog />
                     </ListItemButton>
@@ -146,21 +163,21 @@ export default function MenuDrawer() {
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
-                            < LinkIcon sx={{ ml: 2.5 }} />
+                            < LinkIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="icons" />
                         </ListItemIcon>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
-                            < LockIcon sx={{ ml: 2.5 }} />
+                            < LockIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="icons" />
                         </ListItemIcon>
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
-                            < ListAltIcon sx={{ ml: 2.5 }} />
+                            < ListAltIcon sx={{ ml: 2.5, mb: 5 }} fontSize="large" color="icons" />
                         </ListItemIcon>
                     </ListItemButton>
                 </ListItem>
@@ -169,10 +186,10 @@ export default function MenuDrawer() {
     );
 
     return (
-        <div className='drawer_style'>
-            {[""].map((anchor) => (
+        <div>
+            {["MENÚ"].map((anchor) => (
                 <Fragment key={anchor}>
-                    <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+                    <Button onClick={toggleDrawer(anchor, true)} color="input" variant="outlined" color="input">{anchor}</Button>
                     <Drawer
                         open={state[anchor]}
                         onClose={toggleDrawer(anchor, false)}

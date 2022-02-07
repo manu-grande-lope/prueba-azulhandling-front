@@ -1,16 +1,16 @@
 import './App.css';
-import Header from './components/header/index.jsx';
+import DataGrab from "./components/table/index.jsx";
 import {Grid }from "@mui/material";
-import InputFlights from './components/inputFlight';
-import DataGrab from './components/table/index.jsx';
+import ThemeProvider from './components/theme/theme-provider';
 
 
 function App() {
   return (
+    <ThemeProvider>
     <Grid xl={12}>
-      <Header/>
       <DataGrab/>
     </Grid>
+    </ThemeProvider>
   );
 }
 

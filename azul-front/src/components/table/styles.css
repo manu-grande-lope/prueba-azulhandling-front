@@ -1,4 +1,6 @@
-.tableRow_styles{
-    background-color: aqua;
-    color: aliceblue;
+
+.div_flex{
+    display: flex;
+    justify-content: center;
+    font-size: larger;
 }

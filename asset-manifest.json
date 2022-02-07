@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/prueba-azulhandling-front/static/css/main.e7165eb0.css",
+    "main.js": "/prueba-azulhandling-front/static/js/main.5880c238.js",
+    "static/js/787.63fade8b.chunk.js": "/prueba-azulhandling-front/static/js/787.63fade8b.chunk.js",
+    "index.html": "/prueba-azulhandling-front/index.html",
+    "main.e7165eb0.css.map": "/prueba-azulhandling-front/static/css/main.e7165eb0.css.map",
+    "main.5880c238.js.map": "/prueba-azulhandling-front/static/js/main.5880c238.js.map",
+    "787.63fade8b.chunk.js.map": "/prueba-azulhandling-front/static/js/787.63fade8b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e7165eb0.css",
+    "static/js/main.5880c238.js"
+  ]
+}

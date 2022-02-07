@@ -22,12 +22,13 @@ import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import { Grid } from '@mui/material';
 import { Stack, Typography, Button } from "@mui/material";
 
 
 const columns = [
   { id: 'number', label: 'Flight Number', minWidth: 60 },
-  { id: 'reg', label: 'REG', minWidth: 60 },
+  { id: 'reg', label: 'REG', minWidth: 100 },
   {
     id: 'airport',
     label: 'Airport/IATA',
@@ -62,7 +63,7 @@ export default function DataGrab() {
 
     function InputWithIcon() {
       return (
-        <Box sx={{ display: 'flex', alignItems:"center" }} >
+        <Box sx={{ display: 'flex', alignItems: "center" }} >
           <TextField
             variant="standard"
             color="input"
@@ -70,7 +71,7 @@ export default function DataGrab() {
             focused />
           <Button color="input" disableRipple={false} disableFocusRipple={true} variant="text" size='small'>
             <Typography ml={3} >Search flight</Typography>
-            <SearchIcon sx={{ my: 2, ml:3 }} color="input" />
+            <SearchIcon sx={{ my: 2, ml: 3 }} color="input" />
           </Button>
         </Box>
       );
@@ -86,7 +87,7 @@ export default function DataGrab() {
             onChange={(newValue) => {
               setValue(newValue);
             }}
-            renderInput={(params) => <TextField {...params} variant="standard" color="input" focused className="date" sx={{paddingLeft:"15px", paddingRight:"15px"}} />}
+            renderInput={(params) => <TextField {...params} variant="standard" color="input" focused className="date" sx={{ paddingLeft: "15px", paddingRight: "15px" }} />}
           />
         </LocalizationProvider>
       );
@@ -144,27 +145,27 @@ export default function DataGrab() {
   const [flights, getNewFlights] = useState({});
   let counter = 0;
 
-const fetchFlights = async ()=>{
-  try{
-    const flightsData = await
-  fetch("https://aerodatabox.p.rapidapi.com/flights/airports/icao/EHAM/2021-10-04T20:00/2021-10-05T08:00?withLeg=true&withCodeshared=true&withLocation=true", {
-    "method": "GET",
-    "headers": {
-      "x-rapidapi-host": "aerodatabox.p.rapidapi.com",
-      "x-rapidapi-key": "5137ed55a2msha1e404c548f5ecap13be3cjsnc78ba2ad1c3f"
+  const fetchFlights = async () => {
+    try {
+      const flightsData = await
+        fetch("https://aerodatabox.p.rapidapi.com/flights/airports/icao/EHAM/2021-10-04T20:00/2021-10-05T08:00?withLeg=true&withCodeshared=true&withLocation=true", {
+          "method": "GET",
+          "headers": {
+            "x-rapidapi-host": "aerodatabox.p.rapidapi.com",
+            "x-rapidapi-key": "c27b645d30msh8c47d4c0bab782ep11153fjsndc1574745ef3"
+          }
+        })
+          .then(response => {
+            return response.json()
+          })
+          .then(data => {
+            getNewFlights({ ...data })
+            console.log(flights)
+          })
+    } catch (err) {
+      console.error(err.message)
     }
-  })
-    .then(response => {
-      return response.json()
-    })
-    .then(data => {
-      getNewFlights({ ...data })
-      console.log(flights)
-    })
-  }catch (err) {
-    console.error(err.message)
-  }
-};
+  };
 
   useEffect(() => {
 
@@ -173,291 +174,289 @@ const fetchFlights = async ()=>{
     const interval = setInterval(() => {
       fetchFlights()
     }, 10000000)
-    return()=>interval
+    return () => interval
 
   }, []);
 
   return (
     <Fragment>
       <Header />
-      <Stack justifyContent="space-around" direction="row" backgroundColor="#EBC431">
-            </Stack>
-      <div className='tables_style'>
-      <div className='div_table'>
-        <Paper sx={{width:'95%', overflow:'hidden', mt: "20px" }} elevation={2}>
-          <TableContainer sx={{ maxHeight: '80vh' }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  <Typography variant="h6" color="input" fontSize={19} sx={{ marginRight: "40px" }}>
-              ARRIVALS
-            </Typography>
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                </TableRow>
-                <TableRow className='tableRow_styles'>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                      sx={{ backgroundColor: "#EBC431", color: "#ffffff", fontSize: "20px" }}
-                    >
-                      {column.label}
+      <Grid item container className='tables_style'>
+        <div className='div_table'>
+          <Paper sx={{ width: '95%', overflow: 'hidden', mt: "20px" }} elevation={2}>
+            <TableContainer sx={{ maxHeight: '75vh' }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                      <Typography variant="h6" color="input" fontSize={19} sx={{ marginRight: "40px" }}>
+                        ARRIVALS
+                      </Typography>
                     </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {flights.arrivals
-                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  ?.map((row, index) => {
-                    if (index > counter) {
-                      return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.number} >
-                          {columns.map((column) => {
-                            const value = row[column.id];
-                            if (column.label === 'Airline') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.airline.name}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'Airport/IATA') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.departure.airport?.iata}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'REG') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.aircraft.reg}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'Expected time') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.arrival.scheduledTimeLocal}
-                                </TableCell>
-                              );
-                            }
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                {value}
-                              </TableCell>
-                            )
-                          })}
-                        </TableRow>
-                      );
-                    } else {
-                      return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.number}>
-                          {columns.map((column) => {
-                            const value = row[column.id];
-                            if (column.label === 'Airline') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.airline.name}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'Airport/IATA') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.departure.airport?.iata}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'REG') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.aircraft.reg}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'Expected time') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.arrival.scheduledTimeLocal}
-                                </TableCell>
-                              );
-                            }
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                {value}
-                              </TableCell>
-                            )
-                          })}
-                        </TableRow>
-                      );
-                    }
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={flights.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      </div>
-      <div className='div_table'>
-        <Paper sx={{ width: '95%', overflow: 'hidden', mt: "20px" }} elevation={2}>
-          <TableContainer sx={{ maxHeight: '80vh' }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-              <TableRow>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  <Typography variant="h6" color="input" fontSize={19} sx={{ marginRight: "40px" }}>
-              DEPARTURES
-            </Typography>
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                  <TableCell sx={{ backgroundColor: "#EBC431"}} >
-                  </TableCell>
-                </TableRow>
-                <TableRow className='tableRow_styles'>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                      sx={{ backgroundColor: "#EBC431", color: "#ffffff", fontSize: "20px" }}
-                    >
-                      {column.label}
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
                     </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {flights.departures
-                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  ?.map((row, index) => {
-                    if (index > counter) {
-                      return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.number} >
-                          {columns.map((column) => {
-                            const value = row[column.id];
-                            if (column.label === 'Airline') {
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                  </TableRow>
+                  <TableRow className='tableRow_styles'>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                        sx={{ backgroundColor: "#EBC431", color: "#ffffff", fontSize: "20px" }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {flights.arrivals
+                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.map((row, index) => {
+                      if (index > counter) {
+                        return (
+                          <TableRow hover role="checkbox" tabIndex={-1} key={row.number} >
+                            {columns.map((column) => {
+                              const value = row[column.id];
+                              if (column.label === 'Airline') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.airline.name}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Airport/IATA') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.departure.airport?.iata}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'REG') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.aircraft.reg}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Expected time') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.arrival.scheduledTimeLocal}
+                                  </TableCell>
+                                );
+                              }
                               return (
                                 <TableCell key={column.id} align={column.align}>
-                                  {row.airline.name}
+                                  {value}
                                 </TableCell>
-                              );
-                            }
-                            if (column.label === 'Airport/IATA') {
+                              )
+                            })}
+                          </TableRow>
+                        );
+                      } else {
+                        return (
+                          <TableRow hover role="checkbox" tabIndex={-1} key={row.number}>
+                            {columns.map((column) => {
+                              const value = row[column.id];
+                              if (column.label === 'Airline') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.airline.name}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Airport/IATA') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.departure.airport?.iata}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'REG') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.aircraft.reg}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Expected time') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.arrival.scheduledTimeLocal}
+                                  </TableCell>
+                                );
+                              }
                               return (
                                 <TableCell key={column.id} align={column.align}>
-                                  {row.arrival.airport?.iata}
+                                  {value}
                                 </TableCell>
-                              );
-                            }
-                            if (column.label === 'REG') {
+                              )
+                            })}
+                          </TableRow>
+                        );
+                      }
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={flights.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </div>
+        <div className='div_table'>
+          <Paper sx={{ width: '95%', overflow: 'hidden', mt: "20px" }} elevation={2}>
+            <TableContainer sx={{ maxHeight: '75vh' }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                      <Typography variant="h6" color="input" fontSize={19} sx={{ marginRight: "40px" }}>
+                        DEPARTURES
+                      </Typography>
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                    <TableCell sx={{ backgroundColor: "#EBC431" }} >
+                    </TableCell>
+                  </TableRow>
+                  <TableRow className='tableRow_styles'>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                        sx={{ backgroundColor: "#EBC431", color: "#ffffff", fontSize: "20px" }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {flights.departures
+                    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    ?.map((row, index) => {
+                      if (index > counter) {
+                        return (
+                          <TableRow hover role="checkbox" tabIndex={-1} key={row.number} >
+                            {columns.map((column) => {
+                              const value = row[column.id];
+                              if (column.label === 'Airline') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.airline.name}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Airport/IATA') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.arrival.airport?.iata}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'REG') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.aircraft.reg}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Expected time') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.departure.scheduledTimeLocal}
+                                  </TableCell>
+                                );
+                              }
                               return (
                                 <TableCell key={column.id} align={column.align}>
-                                  {row.aircraft.reg}
+                                  {value}
                                 </TableCell>
-                              );
-                            }
-                            if (column.label === 'Expected time') {
+                              )
+                            })}
+                          </TableRow>
+                        );
+                      } else {
+                        return (
+                          <TableRow hover role="checkbox" tabIndex={-1} key={row.number}>
+                            {columns.map((column) => {
+                              const value = row[column.id];
+                              if (column.label === 'Airline') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.airline.name}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Airport') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.departure.airport?.iata}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'REG') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.aircraft.reg}
+                                  </TableCell>
+                                );
+                              }
+                              if (column.label === 'Expected time') {
+                                return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    {row.departure.scheduledTimeLocal}
+                                  </TableCell>
+                                );
+                              }
                               return (
                                 <TableCell key={column.id} align={column.align}>
-                                  {row.departure.scheduledTimeLocal}
+                                  {value}
                                 </TableCell>
-                              );
-                            }
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                {value}
-                              </TableCell>
-                            )
-                          })}
-                        </TableRow>
-                      );
-                    } else {
-                      return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.number}>
-                          {columns.map((column) => {
-                            const value = row[column.id];
-                            if (column.label === 'Airline') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.airline.name}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'Airport') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.departure.airport?.iata}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'REG') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.aircraft.reg}
-                                </TableCell>
-                              );
-                            }
-                            if (column.label === 'Expected time') {
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {row.departure.scheduledTimeLocal}
-                                </TableCell>
-                              );
-                            }
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                {value}
-                              </TableCell>
-                            )
-                          })}
-                        </TableRow>
-                      );
-                    }
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={flights.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      </div>
-      </div>
+                              )
+                            })}
+                          </TableRow>
+                        );
+                      }
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={flights.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </div>
+      </Grid>
     </Fragment>
   );
 };

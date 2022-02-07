@@ -1,4 +1,4 @@
-# Prueba Técnica desarrollador fullstack, para Azúl Handling, Sevilla.
+# Prueba Técnica desarrollador fullstack, para Azúl Handling, Sevilla. Entrega 7/FEB/2022 - 14.00
 
 Autor: Manuel Lope Revilla
 mail: manugrande@gmail.com
@@ -14,6 +14,13 @@ telf: 696393768
  
 **Descripción del proyecto**
 
-En el front e hecho una tabla de llegada de vuelos, en ella tenemos un buscador que nos muestra un vuelo en particular, y un botón con un menú desplegable con operaciones específicas como añadir vuelos a la base de datos.
-Se despliega una tabla donde consumimos la API AeroDataBox, de la que extraemos los datos de los vuelos que necesitamos y en la que podremos buscar por fecha, número de vuelo, registro, aerolinea, etc...
-La tabla además tiene paginación y selección de filas mostradas, hasta un total de 100.
+Crear una interfaz similar a la presenta con funcionalidades de CRUD de datos y muestra de nuevas entradas con cambio de clase y modal.
+
+**Proceso**
+
+He hecho una iterfaz sencilla y de uso intuitivo, respetando los colores corporativos y el layout propuesto, con un menú en una modal que sólo ocupa espacio si es necesario y en el que podremos añadir nuevos vuelos a la base de datos.
+Por otro lado se nos muestran dos tablas donde podemos ver la información en tiempo real de llegada y salida de aviones con datos relevantes para el seguimiento.
+
+Se presentan dos inputs donde poder buscar vuelos por fecha o por datos concretos y que no me ha dado tiempo a terminar de implementar aún.
+
+Por otro lado, otra de las funcionalidades que se pedían era que el refresco de vuelos mostrara con un cambio de clase y una modal los nuevos vuelos entrantes, y que al igual por falta de tiempo, no se ha terminado de desarrollar.
